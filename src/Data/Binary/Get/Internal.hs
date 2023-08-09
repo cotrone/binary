@@ -155,6 +155,7 @@ instance (Show a) => Show (Decoder a) where
 runGetIncremental :: Get a -> Decoder a
 runGetIncremental g = noMeansNo $
   runCont g B.empty (\i a -> Done i a)
+{-# INLINE runGetIncremental #-}
 
 -- | Make sure we don't have to pass Nothing to a Partial twice.
 -- This way we don't need to pass around an EOF value in the Get monad, it

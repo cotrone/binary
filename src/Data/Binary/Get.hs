@@ -277,6 +277,7 @@ data Decoder a = Fail !B.ByteString {-# UNPACK #-} !ByteOffset String
 -- 'pushEndOfInput'.
 runGetIncremental :: Get a -> Decoder a
 runGetIncremental = calculateOffset . I.runGetIncremental
+{-# INLINE runGetIncremental #-}
 
 calculateOffset :: I.Decoder a -> Decoder a
 calculateOffset r0 = go r0 0
@@ -291,6 +292,7 @@ calculateOffset r0 = go r0 0
                         Just i -> go (k ms) (acc + fromIntegral (B.length i))
                 I.BytesRead unused k ->
                     go (k $! (acc - unused)) acc
+{-# INLINE calculateOffset #-}
 
 -- | DEPRECATED. Provides compatibility with previous versions of this library.
 -- Run a 'Get' monad and return a tuple with three values.
